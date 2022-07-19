@@ -1,2 +1,3 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1 class="h-full w-full bg-neutral-900 text-neutral-100 flex items-center justify-center">
+	<img src="images/croissant-white.svg" alt="Logo" class="h-64 w-64">
+</h1>
