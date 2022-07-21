@@ -2,6 +2,6 @@
 	export let title;
 </script>
 
-<div>
+<div class="text-sm text-neutral-400">
 	{title || ''}
 </div>
