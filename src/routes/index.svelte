@@ -1,11 +1,11 @@
 <script context="module">
 	export async function load({ fetch }) {
-		// const response = await fetch("/notes");
-		// const json = await response.json();
+		const response = await fetch("/notes");
+		const json = await response.json();
 		return {
-			status: 200,
+			status: response.status,
 			props: {
-				data: { notes: [] }
+				data: response.ok && json
 			}
 		};
 	}
