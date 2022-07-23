@@ -1,16 +1,17 @@
 <script>
-	import { onMount } from 'svelte';
-	import { X } from '@inqling/svelte-icons';
+	import { onMount, createEventDispatcher } from "svelte";
+	import { X } from "@inqling/svelte-icons";
 
-	import EventTrap from '../scripts/EventTrap';
-	import CornerResizeIcon from './CornerResizeIcon.svelte';
+	import EventTrap from "$lib/EventTrap";
+	import CornerResizeIcon from "$lib/components/CornerResizeIcon.svelte";
+
+	const minimumSize = 120;
+	const dispatch = createEventDispatcher();
 
 	export let offsetX;
 	export let offsetY;
-	export let height;
-	export let width;
-
-	const minimumSize = 120;
+	export let height = minimumSize;
+	export let width = minimumSize;
 
 	let el;
 	let grabAnchor;
@@ -33,6 +34,7 @@
 	function handleMouseUp(e) {
 		EventTrap.handleDragEnd(e);
 		isDragging = false;
+		dispatch("update", { offsetX, offsetY, height, width });
 	}
 
 	function handleResizeMouseDown(e) {
@@ -47,6 +49,7 @@
 	function handleResizeMouseUp(e) {
 		EventTrap.handleDragEnd(e);
 		({ width, height } = noteSize);
+		dispatch("update", { offsetX, offsetY, height, width });
 	}
 
 	onMount(() => {
@@ -55,15 +58,15 @@
 	});
 
 	function updatePosition() {
-		el.style.top = offsetY + 'px';
-		el.style.left = offsetX + 'px';
+		el.style.top = offsetY + "px";
+		el.style.left = offsetX + "px";
 	}
 
 	function updateSize() {
 		const _height = noteSize.height > minimumSize ? noteSize.height : minimumSize;
 		const _width = noteSize.width > minimumSize ? noteSize.width : minimumSize;
-		el.style.height = _height + 'px';
-		el.style.width = _width + 'px';
+		el.style.height = _height + "px";
+		el.style.width = _width + "px";
 	}
 </script>
 
@@ -72,8 +75,8 @@
 	class:cursor-grabbing={isDragging}
 	class:scale-95={isDragging}
 	class:hidden={isLoading}
-	style:height={height + 'px'}
-	style:width={width + 'px'}
+	style:height={height + "px"}
+	style:width={width + "px"}
 	bind:this={el}
 	on:mousedown={handleMouseDown}
 	on:mouseup={handleMouseUp}

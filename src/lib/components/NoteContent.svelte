@@ -1,8 +1,8 @@
 <script>
-	import InvalidContent from './CotentTypes/InvalidContent.svelte';
-	import TextContent from './CotentTypes/TextContent.svelte';
-	import ImageContent from './CotentTypes/ImageContent.svelte';
-	import SwatchContent from './CotentTypes/SwatchContent.svelte';
+	import InvalidContent from '$lib/components/ContentTypes/InvalidContent.svelte';
+	import TextContent from '$lib/components/ContentTypes/TextContent.svelte';
+	import ImageContent from '$lib/components/ContentTypes/ImageContent.svelte';
+	import SwatchContent from '$lib/components/ContentTypes/SwatchContent.svelte';
 
 	export let data;
 	export let type;

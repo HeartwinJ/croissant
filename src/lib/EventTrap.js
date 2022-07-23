@@ -14,6 +14,7 @@ export default {
 	handleDrag(event, target, targetPos, cursorPos) {
 		event = event || window.event;
 		event.preventDefault();
+		event.stopPropagation();
 
 		targetPos.x = cursorPos.x - event.clientX;
 		targetPos.y = cursorPos.y - event.clientY;
@@ -24,6 +25,7 @@ export default {
 	},
 	handleDragEnd(event) {
 		event.preventDefault();
+		event.stopPropagation();
 		document.onmouseup = null;
 		document.onmousemove = null;
 	},
@@ -31,6 +33,7 @@ export default {
 		let _scale = scale;
 		if (event.ctrlKey) {
 			event.preventDefault();
+			event.stopPropagation();
 			if (event.deltaY > 0) {
 				_scale = scale - 0.1;
 				if (_scale < 0.5) _scale = 0.5;
@@ -45,6 +48,7 @@ export default {
 	handleResize(event, targetSize, cursorPos) {
 		event = event || window.event;
 		event.preventDefault();
+		event.stopPropagation();
 		return {
 			width: targetSize.width + (event.clientX - cursorPos.x),
 			height: targetSize.height + (event.clientY - cursorPos.y)

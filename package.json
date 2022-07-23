@@ -1,6 +1,6 @@
 {
 	"name": "croissant",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@inqling/svelte-icons": "^0.2.2"
+		"@inqling/svelte-icons": "^0.2.2",
+		"mongodb": "^4.8.0"
 	}
 }
