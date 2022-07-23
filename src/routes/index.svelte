@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	export async function load({ fetch }) {
 		const response = await fetch("/notes");
 		const json = await response.json();
@@ -9,14 +9,13 @@
 			}
 		};
 	}
-</script>
-
+</script> -->
 <script>
 	import { onMount } from "svelte";
 	import { notes } from "$lib/stores";
 	import Canvas from "$lib/components/Canvas.svelte";
 
-	export let data;
+	export let data = { notes: [] };
 
 	onMount(async () => {
 		console.log(`🥐 Croissant v${APP_VERSION}`);
