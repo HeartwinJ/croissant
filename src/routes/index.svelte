@@ -1,15 +1,16 @@
-<!-- <script context="module">
+<script context="module">
 	export async function load({ fetch }) {
-		const response = await fetch("/notes");
-		const json = await response.json();
+		// const response = await fetch("/notes");
+		// const json = await response.json();
 		return {
-			status: response.status,
+			status: 200,
 			props: {
-				data: response.ok && json
+				data: { notes: [] }
 			}
 		};
 	}
-</script> -->
+</script>
+
 <script>
 	import { onMount } from "svelte";
 	import { notes } from "$lib/stores";
