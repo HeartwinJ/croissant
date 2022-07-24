@@ -19,7 +19,7 @@
 	let isDragging = false;
 	let cursorPos = { x: 0, y: 0 };
 	let notePos = { x: 0, y: 0 };
-	let noteSize = { width, height };
+	let initialSize = { height, width };
 
 	function handleMouseDown(e) {
 		isDragging = true;
@@ -42,14 +42,20 @@
 	}
 
 	function handleResizeMouseMove(e) {
-		noteSize = EventTrap.handleResize(e, { width, height }, cursorPos);
+		({ width, height } = EventTrap.handleResize(e, initialSize, cursorPos));
 		updateSize();
 	}
 
 	function handleResizeMouseUp(e) {
 		EventTrap.handleDragEnd(e);
-		({ width, height } = noteSize);
+		initialSize = { height, width };
 		dispatch("update", { offsetX, offsetY, height, width });
+	}
+
+	function handleDelete(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		dispatch("delete");
 	}
 
 	onMount(() => {
@@ -63,10 +69,10 @@
 	}
 
 	function updateSize() {
-		const _height = noteSize.height > minimumSize ? noteSize.height : minimumSize;
-		const _width = noteSize.width > minimumSize ? noteSize.width : minimumSize;
-		el.style.height = _height + "px";
-		el.style.width = _width + "px";
+		width = width < minimumSize ? minimumSize : width;
+		height = height < minimumSize ? minimumSize : height;
+		el.style.height = height + "px";
+		el.style.width = width + "px";
 	}
 </script>
 
@@ -83,6 +89,7 @@
 >
 	<span
 		class="hidden group-hover:flex absolute right-0 top-0 m-1 p-1 rounded-md cursor-pointer bg-neutral-700/30 hover:bg-neutral-700/70"
+		on:click={handleDelete}
 	>
 		<X class="h-4 w-4" />
 	</span>

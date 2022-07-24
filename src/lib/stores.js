@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 function createNotes() {
-	const { subscribe, set, update } = writable([]);
+	const { subscribe, set } = writable([]);
 
 	const updateNote = async (note) => {
 		const res = await fetch("/notes", {
@@ -12,17 +12,22 @@ function createNotes() {
 		set(json.notes);
 	};
 
-	const addNote = (note) => {
-		update((_notes) => {
-			_notes.push(note);
-			return _notes;
+	const addNote = async (note) => {
+		const res = await fetch("/notes", {
+			method: "POST",
+			body: JSON.stringify(note)
 		});
+		const json = await res.json();
+		set(json.notes);
 	};
 
-	const removeNote = (note) => {
-		update((_notes) => {
-			set(_notes.filter((_note) => _note._id !== note._id));
+	const deleteNote = async (note) => {
+		const res = await fetch("/notes", {
+			method: "DELETE",
+			body: JSON.stringify(note)
 		});
+		const json = await res.json();
+		set(json.notes);
 	};
 
 	return {
@@ -30,7 +35,7 @@ function createNotes() {
 		set,
 		updateNote,
 		addNote,
-		removeNote
+		deleteNote
 	};
 }
 

@@ -1,7 +1,7 @@
 <script>
-	import NoteContainer from "$lib/components/NoteContainer.svelte";
-	import NoteContent from "$lib/components/NoteContent.svelte";
-	import NoteTitle from "$lib/components/NoteTitle.svelte";
+	import NoteContainer from "$lib/components/Note/NoteContainer.svelte";
+	import NoteContent from "$lib/components/Note/NoteContent.svelte";
+	import NoteTitle from "$lib/components/Note/NoteTitle.svelte";
 
 	import { notes } from "$lib/stores";
 
@@ -25,11 +25,16 @@
 	}
 
 	function handleUpdateContent(e) {
-		console.log("updateContent", e.detail);
+		content = { title, ...e.detail };
+		handleUpdate();
+	}
+
+	function handleDeleteNote() {
+		notes.deleteNote({ _id, config, content });
 	}
 </script>
 
-<NoteContainer {...config} on:update={handleUpdateConfig}>
+<NoteContainer {...config} on:update={handleUpdateConfig} on:delete={handleDeleteNote}>
 	<NoteTitle slot="title" {title} on:update={handleUpdateTitle} />
 	<NoteContent {...rest} on:update={handleUpdateContent} />
 </NoteContainer>

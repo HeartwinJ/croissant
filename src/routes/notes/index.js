@@ -30,9 +30,10 @@ export async function POST(event) {
 		const collection = db.collection("notes");
 		const note = await event.request.json();
 		await collection.insertOne(note);
+		const notes = await collection.find().toArray();
 		return {
 			status: 200,
-			body: note
+			body: { notes }
 		};
 	} catch (err) {
 		return {
@@ -53,6 +54,30 @@ export async function PUT(event) {
 		const note = await event.request.json();
 		const { _id, ...data } = note;
 		await collection.updateOne({ _id: ObjectId(_id) }, { $set: data });
+		const notes = await collection.find().toArray();
+		return {
+			status: 200,
+			body: { notes }
+		};
+	} catch (err) {
+		return {
+			status: 500,
+			body: {
+				message: err.toString(),
+				error: err
+			}
+		};
+	}
+}
+
+export async function DELETE(event) {
+	try {
+		const dbConnection = await clientPromise;
+		const db = dbConnection.db();
+		const collection = db.collection("notes");
+		const note = await event.request.json();
+		const { _id, ...data } = note;
+		await collection.deleteOne({ _id: ObjectId(_id), ...data });
 		const notes = await collection.find().toArray();
 		return {
 			status: 200,
