@@ -39,4 +39,35 @@ function createNotes() {
 	};
 }
 
+function createContextMenu() {
+	const { subscribe, update } = writable({
+		isVisible: false,
+		pos: { x: 0, y: 0 },
+		options: []
+	});
+
+	const show = (config) => {
+		update((ctxMenu) => {
+			config = config || ctxMenu;
+			config.isVisible = true;
+			return config;
+		});
+	};
+
+	const hide = (config) => {
+		update((ctxMenu) => {
+			config = config || ctxMenu;
+			config.isVisible = false;
+			return config;
+		});
+	};
+
+	return {
+		subscribe,
+		show,
+		hide
+	};
+}
+
 export const notes = createNotes();
+export const contextMenu = createContextMenu();
