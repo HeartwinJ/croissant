@@ -11,7 +11,7 @@ const config = {
 	define: {
 		APP_VERSION: JSON.stringify(pkg.version)
 	},
-	envPrefix: ["VITE_", "MONGODB_"],
+	envPrefix: ["VITE_", "MONGODB_", "ENV_"],
 	plugins: [sveltekit()]
 };
 
