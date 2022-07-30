@@ -1,22 +1,21 @@
 <script>
 	import { onMount } from "svelte";
 
-	import { notes } from "$lib/stores";
+	import { notes, contextMenu } from "$lib/stores";
 	import EventTrap from "$lib/EventTrap";
 	import Note from "$lib/components/Note/Note.svelte";
-	import ContextMenu from "./ContextMenu/ContextMenu.svelte";
+	import ContextMenu from "$lib/components/ContextMenu/ContextMenu.svelte";
 
 	let el;
-	let controller;
 	let offsetX;
 	let offsetY;
-	let showContextMenu = false;
 	let canvasScale = 1;
 	let cursorPos = { x: 0, y: 0 };
 	let canvasPos = { x: 0, y: 0 };
 
 	let menuConfig = {
-		pos: { x: 230, y: 340 },
+		isVisible: false,
+		pos: { x: 0, y: 0 },
 		options: [
 			{
 				text: "Create Note",
@@ -25,7 +24,7 @@
 						config: { offsetX: pos.x - offsetX, offsetY: pos.y - offsetY, height: 120, width: 240 },
 						content: { title: "", type: "text", data: "" }
 					});
-					showContextMenu = false;
+					contextMenu.hide();
 				}
 			}
 		]
@@ -47,13 +46,13 @@
 	}
 
 	function handleClick(e) {
-		showContextMenu = false;
+		contextMenu.hide();
 		document.activeElement.blur();
 	}
 
 	function handleContextMenu(e) {
-		menuConfig.pos = EventTrap.handleContextMenu(e);
-		showContextMenu = true;
+		menuConfig.pos = { x: e.clientX, y: e.clientY };
+		contextMenu.show(menuConfig);
 	}
 
 	function updatePosition() {
@@ -73,19 +72,20 @@
 	});
 </script>
 
-{#if showContextMenu}
-	<ContextMenu {...menuConfig} />
+{#if $contextMenu.isVisible}
+	<ContextMenu />
 {/if}
+
 <div class="relative h-0 w-0" bind:this={el}>
 	{#each computedNotes as note (note._id)}
 		<Note {...note} />
 	{/each}
 </div>
+
 <div
 	class="h-full w-full"
-	bind:this={controller}
 	on:mousedown={handleMouseDown}
 	on:mouseup={handleMouseUp}
-	on:contextmenu={handleContextMenu}
+	on:contextmenu|preventDefault={handleContextMenu}
 	on:click={handleClick}
 />

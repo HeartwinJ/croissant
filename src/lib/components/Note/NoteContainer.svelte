@@ -5,6 +5,8 @@
 	import EventTrap from "$lib/EventTrap";
 	import CornerResizeIcon from "$lib/components/CornerResizeIcon.svelte";
 
+	import { contextMenu } from "$lib/stores";
+
 	const minimumSize = 120;
 	const dispatch = createEventDispatcher();
 
@@ -14,7 +16,6 @@
 	export let width = minimumSize;
 
 	let el;
-	let grabAnchor;
 	let isLoading = true;
 	let isDragging = false;
 	let cursorPos = { x: 0, y: 0 };
@@ -22,6 +23,7 @@
 	let initialSize = { height, width };
 
 	function handleMouseDown(e) {
+		contextMenu.hide();
 		isDragging = true;
 		cursorPos = EventTrap.handleDragStart(e, 1, handleMouseMove, handleMouseUp);
 	}
@@ -58,6 +60,10 @@
 		dispatch("delete");
 	}
 
+	function handleContextMenu(e) {
+		dispatch("contextmenu", { x: e.clientX, y: e.clientY });
+	}
+
 	onMount(() => {
 		updatePosition();
 		isLoading = false;
@@ -86,6 +92,7 @@
 	bind:this={el}
 	on:mousedown={handleMouseDown}
 	on:mouseup={handleMouseUp}
+	on:contextmenu|preventDefault={handleContextMenu}
 >
 	<span
 		class="hidden group-hover:flex absolute right-0 top-0 m-1 p-1 rounded-md cursor-pointer bg-neutral-700/30 hover:bg-neutral-700/70"
@@ -95,7 +102,6 @@
 	</span>
 	<span
 		class="hidden group-hover:flex absolute right-0 bottom-0 m-1 p-1 rounded-md cursor-se-resize bg-neutral-700/30 hover:bg-neutral-800/70"
-		bind:this={grabAnchor}
 		on:mousedown={handleResizeMouseDown}
 		on:mouseup={handleResizeMouseUp}
 	>
