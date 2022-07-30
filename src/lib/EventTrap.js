@@ -54,8 +54,4 @@ export default {
 			height: targetSize.height + (event.clientY - cursorPos.y)
 		};
 	},
-	handleContextMenu(event) {
-		event.preventDefault();
-		return { x: event.clientX, y: event.clientY };
-	},
 };

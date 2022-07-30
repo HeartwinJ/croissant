@@ -1,15 +1,13 @@
 <script>
 	import { onMount } from "svelte";
 	import MenuOption from "./MenuOption.svelte";
-
-	export let pos;
-	export let options;
+	import { contextMenu } from "$lib/stores";
 
 	let menuEl;
 
-	$: updatePosition(pos);
+	$: updatePosition($contextMenu.pos);
 
-	function updatePosition(_pos = pos) {
+	function updatePosition(_pos) {
 		if (!menuEl) return;
 
 		menuEl.style.top = _pos.y + "px";
@@ -17,12 +15,12 @@
 	}
 
 	onMount(() => {
-		updatePosition();
+		updatePosition($contextMenu.pos);
 	});
 </script>
 
-<div class="absolute z-50 bg-neutral-800 p-2 rounded-lg" bind:this={menuEl}>
-	{#each options as option}
-		<MenuOption {...option} bind:menuPos={pos} />
+<div class="fixed z-50 bg-neutral-800 p-2 rounded-lg" bind:this={menuEl}>
+	{#each $contextMenu.options as option}
+		<MenuOption {...option} menuPos={$contextMenu.pos} />
 	{/each}
 </div>
