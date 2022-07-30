@@ -19,7 +19,10 @@
 	export let data = { notes: [] };
 
 	onMount(async () => {
-		console.info(`🥐 Croissant v${APP_VERSION}`);
+		console.info(`
+	🥐 Croissant v${APP_VERSION}\n
+	🛠️ ${import.meta.env.MODE}
+		`);
 		notes.set(data.notes);
 	});
 </script>
