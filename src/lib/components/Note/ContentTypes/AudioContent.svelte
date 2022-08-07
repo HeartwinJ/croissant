@@ -3,5 +3,5 @@
 </script>
 
 <audio class="h-full w-full" controls>
-	<source src={data.src} type={data.type} />
+	<source src={data.src} />
 </audio>
