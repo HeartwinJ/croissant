@@ -54,4 +54,30 @@ export default {
 			height: targetSize.height + (event.clientY - cursorPos.y)
 		};
 	},
+	handleMouseMove(event) {
+		event.preventDefault();
+		return { x: event.clientX, y: event.clientY };
+	},
+	async handlePaste(event, callback) {
+		event.preventDefault();
+		event.stopPropagation();
+		const clipboardData = event.clipboardData || event.originalEvent.clipboardData;
+
+		let data = clipboardData.getData("text");
+		if (!data) {
+			const items = clipboardData.items;
+			for (const item of items) {
+				if (item.kind === "file") {
+					data = await new Promise((resolve) => {
+						const blob = item.getAsFile();
+						const reader = new FileReader();
+						reader.onload = () => resolve(reader.result);
+						reader.readAsDataURL(blob);
+					});
+				}
+			}
+		}
+
+		callback(data);
+	}
 };
