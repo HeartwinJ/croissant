@@ -1,5 +1,7 @@
 <script context="module">
 	export async function load({ fetch }) {
+		// Redirect to /auth until authentication is implemented
+		return { status: 302, redirect: "/auth" };
 		const response = await fetch("/notes");
 		const json = await response.json();
 		return {
@@ -35,6 +37,4 @@
 	</div>
 {/if}
 
-<div class="h-full w-full bg-neutral-900 text-neutral-100">
-	<Canvas />
-</div>
+<Canvas />
